@@ -1,5 +1,6 @@
-gradio>=5.0.0
+gradio==4.44.1
 pandas>=2.0.0
 scikit-learn>=1.5.0
 skops>=0.10.0
 numpy>=1.24.0
+huggingface_hub==0.24.0

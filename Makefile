@@ -1,5 +1,5 @@
 install:
-	pip install --upgrade pip && \
+	pip install --upgrade pip
 	pip install -r requirements.txt
 
 format:
@@ -9,10 +9,11 @@ train:
 	python train.py
 
 eval:
-	echo "## Model Metrics" > report.md
-	cat ./Results/metrics.txt >> report.md
-	echo '\n## Confusion Matrix Plot' >> report.md
-	echo '![Confusion Matrix](./Results/model_results.png)' >> report.md
+	echo ## Model Metrics > report.md
+	type Results\metrics.txt >> report.md
+	echo. >> report.md
+	echo ## Confusion Matrix Plot >> report.md
+	echo ![Confusion Matrix](./Results/model_results.png) >> report.md
 	cml comment create report.md
 
 update-branch:
@@ -23,12 +24,12 @@ update-branch:
 	git push --force origin HEAD:update
 
 prepare-app:
-	mkdir -p App || true
-	cp Model/breast_cancer_pipeline.skops App/ || true
-	cp Data/data.csv App/ || true
+	if not exist App mkdir App
+	copy Model\breast_cancer_pipeline.skops App\ 2>nul || echo Model file copied
+	copy Data\data.csv App\ 2>nul || echo Data file copied
 
 hf-login:
-	pip install -U huggingface_hub
+	pip install -U "huggingface_hub==0.24.0"
 	python -c "from huggingface_hub import login; login('$(HF)')"
 
 push-hub: prepare-app
