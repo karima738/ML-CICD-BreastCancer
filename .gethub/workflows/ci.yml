@@ -7,22 +7,25 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
-permissions: write-all
+permissions:
+  write-all
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+
       - uses: iterative/setup-cml@v2
 
       - name: Install Packages
         run: make install
 
-      - name: Format Code
+      - name: Format
         run: make format
 
-      - name: Train Model
+      - name: Train
         run: make train
 
       - name: Evaluation
