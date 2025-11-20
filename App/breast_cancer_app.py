@@ -2,16 +2,9 @@ import gradio as gr
 import pandas as pd
 import skops.io as sio
 
-# Charger le modèle avec TOUS les types nécessaires
-pipe = sio.load("Model/breast_cancer_pipeline.skops", trusted=[
-    "sklearn.ensemble._forest.RandomForestClassifier",
-    "sklearn.pipeline.Pipeline",
-    "sklearn.compose._column_transformer.ColumnTransformer",
-    "sklearn.impute._base.SimpleImputer",
-    "sklearn.preprocessing._data.StandardScaler",
-    "numpy.dtype",  # ✅ Type manquant ajouté
-    "numpy.ndarray",  # Souvent nécessaire aussi
-])
+# Charger le modèle avec tous les types nécessaires
+untrusted_types = sio.get_untrusted_types(file="Model/breast_cancer_pipeline.skops")
+pipe = sio.load("Model/breast_cancer_pipeline.skops", trusted=untrusted_types)
 
 # Charger les noms des features
 df = pd.read_csv("Data/data.csv")
@@ -21,10 +14,8 @@ feature_names = df.drop(columns=["id", "Unnamed: 32", "diagnosis"], errors="igno
 def predict_cancer(*features):
     """
     Prédire si une tumeur est maligne ou bénigne.
-
     Args:
         features: 30 caractéristiques du noyau cellulaire
-
     Returns:
         str: Prédiction avec probabilité
     """
@@ -63,6 +54,7 @@ Enter the cell nucleus characteristics to predict if a tumor is **malignant** or
 
 ⚠️ **Disclaimer**: This is a demo model for educational purposes only. Always consult healthcare professionals.
 """
+
 article = """
 This app is part of the CI/CD for Machine Learning guide. 
 It demonstrates automated training, evaluation, and deployment using GitHub Actions.
