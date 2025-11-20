@@ -39,7 +39,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 # 3. Pipeline de Machine Learning
 print("\n🔧 Construction du pipeline...")
 
-# Toutes les colonnes sont numériques pour Breast Cancer
 num_col = list(range(X.shape[1]))
 
 transform = ColumnTransformer(

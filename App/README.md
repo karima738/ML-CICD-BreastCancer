@@ -7,11 +7,10 @@ sdk: gradio
 sdk_version: 4.44.1
 app_file: breast_cancer_app.py
 pinned: false
-license: apache-2.0
 ---
 
-# Breast Cancer Classification Model
+# Breast Cancer Classification App
 
-This application predicts whether a breast tumor is malignant or benign based on cell nucleus characteristics.
+This application uses machine learning to classify breast tumors as malignant or benign.
 
-⚠️ **Disclaimer**: This is a demo model for educational purposes only. Always consult healthcare professionals.
+⚠️ **Disclaimer**: Educational purposes only. Consult healthcare professionals.

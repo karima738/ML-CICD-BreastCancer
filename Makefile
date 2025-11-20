@@ -24,9 +24,10 @@ update-branch:
 	git push --force origin HEAD:update
 
 prepare-app:
-	if not exist App mkdir App
-	copy Model\breast_cancer_pipeline.skops App\ 2>nul || echo Model file copied
-	copy Data\data.csv App\ 2>nul || echo Data file copied
+	if not exist App\Model mkdir App\Model
+	if not exist App\Data mkdir App\Data
+	copy Model\breast_cancer_pipeline.skops App\Model\
+	copy Data\data.csv App\Data\
 
 hf-login:
 	pip install -U "huggingface_hub==0.24.0"
