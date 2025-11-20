@@ -1,0 +1,51 @@
+name: Continuous Deployment
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: update  # ✅ Récupère depuis la branche update
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Prepare App folder
+        run: |
+          mkdir -p App
+          cp Model/breast_cancer_model.skops App/ || true
+          cp Data/data.csv App/ || true
+
+      - name: Install Hugging Face Hub
+        run: |
+          pip install --upgrade pip
+          pip install huggingface_hub
+
+      - name: Deploy to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python -c "
+          from huggingface_hub import HfApi, login
+          login('${HF_TOKEN}')
+          api = HfApi()
+          api.upload_folder(
+              folder_path='./App',
+              repo_id='karima15/Breast-Cancer-App',
+              repo_type='space',
+              commit_message='Deploy from GitHub Actions'
+          )
+          "

@@ -1,4 +1,5 @@
-gradio
-pandas
-scikit-learn
-skops
+gradio>=5.0.0
+pandas>=2.0.0
+scikit-learn>=1.5.0
+skops>=0.10.0
+numpy>=1.24.0
